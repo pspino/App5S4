@@ -1,0 +1,3 @@
+[s1,Fe] = audioread('Sons/cordes_16k.wav');
+[s2,Fe] = audioread('Sons/phrase.wav');
+[s3,Fe] = audioread('Sons/cordes_16k.wav');
