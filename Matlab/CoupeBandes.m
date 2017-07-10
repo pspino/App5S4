@@ -17,10 +17,12 @@ xpeak = [];
 xpeak(end+1) = find(peaks==max(peaks(:)));
 xpeak(end+1) = find(peaks==max(peaks(xpeak(1)+1:Fe/2)));        %Fait selon le Plot(peaks);
 
-z = [exp(xpeak(1)*2*pi*i) exp(-xpeak(1)*2*pi*i)];
+z = [exp((xpeak(1)*2*pi)/Fe*i) exp((-xpeak(1)*2*pi)/Fe*i)];
 p = 0.99*[exp(xpeak(1)*2*pi*i) exp(-xpeak(1)*2*pi*i)];
 a = poly(p);
 b = poly(z);
 
 figure
 zplane(b,a);
+figure
+freqz(b,a);
