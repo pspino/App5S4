@@ -16,12 +16,18 @@
 
 % stem(peaks);
 % freq = [900 930 1300 1330];
-function r = CoupeBandes(s1,Fe, freq)
-    freq = [880 915 930 1280 1315 1330];
-    z = [exp((freq(1)*2*pi)/Fe*i) exp((freq(2)*2*pi)/Fe*i) exp((freq(3)*2*pi)/Fe*i) exp((freq(4)*2*pi)/Fe*i) exp((freq(5)*2*pi)/Fe*i) exp((freq(6)*2*pi)/Fe*i)];
+function r = CoupeBandes(s1,Fe)
+%     freq = [890 930 1280 1330 915 1315 ];
+%     z = [exp((freq(1)*2*pi)/Fe*i) exp((freq(2)*2*pi)/Fe*i) exp((freq(3)*2*pi)/Fe*i) exp((freq(4)*2*pi)/Fe*i) exp((freq(5)*2*pi)/Fe*i) exp((freq(6)*2*pi)/Fe*i)];
+    freq = [900 920 1300 1320];
+    z = [exp((freq(1)*2*pi)/Fe*i) exp((freq(2)*2*pi)/Fe*i) exp((freq(3)*2*pi)/Fe*i) exp((freq(4)*2*pi)/Fe*i) ];
     z = [z, conj(z)];
-    p = 0.975*z;
-    a = poly(p);
-    b = poly(z);
+%     p = 0.980*z;
+    p = 0.90*z;
+    a = poly([p]);
+    b = poly([z]);
     r = filter(b,a,s1);
+    
+    figure
+    freqz(b,a)
 end
