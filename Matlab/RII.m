@@ -9,22 +9,24 @@ clear all;
 % a = [1 0.3696 0.04 ];                                 %Coeff Deno
 
 %1/H(z)
-a = [1 -3.914 7.643 -9.551 8.717 -5.637 2.074];         
-b = [1 0.3696 0.04];
+b = [1 -3.914 7.643 -9.551 8.717 -5.637 2.074];         
+a = [1 0.3696 0.04];
 
-z = roots(b);
-p = roots(a);
+z = roots(a);
+p = roots(b);
 
-zplane(z,p);
-
-p = [.99*p(1); .99*p(2); 1/p(3); 1/p(4) ;1/p(5); 1/p(6)];
+p = [.99*p(1); .99*p(2); 1/1.2^2*p(3); 1/1.2^2*p(4); 1/1.2^2*p(5); 1/1.2^2*p(6)];
 figure
-zplane(z,p);
+freqz(z,p);
 
-a = poly(z);
-b = poly(p);
+b = poly(z);
+a = poly(p);
+
+figure
+zplane(b,a);
 
 r = filter(b,a,s1);
+r = CoupeBandes(r,Fe);
 figure
 plot(r);
-soundsc(r);
+soundsc(r,Fe);
