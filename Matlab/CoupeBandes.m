@@ -27,7 +27,4 @@ function r = CoupeBandes(s1,Fe)
     a = poly([p]);
     b = poly([z]);
     r = filter(b,a,s1);
-    
-    figure
-    freqz(b,a)
 end
