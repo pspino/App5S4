@@ -7,9 +7,65 @@ clc
 [r,Fe] = audioread('Sons/phrase_malentendant_bruite.wav');
 [s2,Fe] = audioread('Sons/phrase_originale2.wav');
 
-t = RIFFunction(r,256,16);
+rif_4 = RIF(r,256,4);
+rif_4 = CoupeBandes(rif_4,Fe);
+% audiowrite('Sons/Son_RIF_4_CoupeBande_4_90.wav',rif_4,Fe);
+
+rif_8 = RIF(r,256,8);
+rif_8 = CoupeBandes(rif_8,Fe);
+% audiowrite('Sons/Son_RIF_8_CoupeBande_4_90.wav',rif_8,Fe);
+
+rif_16 = RIF(r,256,16);
+rif_16 = CoupeBandes(rif_16,Fe);
+% audiowrite('Sons/Son_RIF_16_CoupeBande_4_90.wav',rif_16,Fe);
+
+rii = RII(r,Fe);
+rii = CoupeBandes(r,Fe);
+% audiowrite('Sons/Son_RII_CoupeBande_4_90.wav',rii,Fe);
+
+%% SNR
+mrii = mean(rii);
+mog = mean(s2);
+for id = 1:length(r)
+    normS2(id) = s2(id) - mog;
+    normRII(id) = rii(id) - mrii;
+end
+
+maxOg = max(normS2(:));
+maxrii = max(normRII(:));
+normS2 = normS2/maxOg;
+normRII = normRII/maxrii;
+
+[corr,lag] = xcorr(normRII,normS2); 
+[~,I] = max(abs(corr));
+lagDiff = lag(I);
+normRII = normRII(lagDiff+1:end);
+t1 = (0:length(normS2)-1)/Fe;
+t2 = (0:length(normRII)-1)/Fe;
+
+% figure
+% subplot(2,1,1);
+% plot(normRII);
+% subplot(2,1,2);
+% plot(s2);
+
+b1 = find(t1==0.8);
+b2 = find(t1==3);
+normRII = normRII(b1:b2);
+bruit = normS2(b1:b2)-normRII;
+
+figure
+% plot(bruit);
+plot(bruit.^2);
+% sound(bruit,Fe);
+
+num = 0;
+denum =0;
+for id = 1:length(bruit)
+   num = num + s2((id)).^2;
+   denum = denum + bruit(id).^2;
+end
+
+RSB = 10*log10(num/denum)
 
 
-r = RII(r,Fe);
-r = CoupeBandes(r,Fe);
-audiowrite('Sons/Son_RII_CoupeBande_4_90.wav',r,Fe);

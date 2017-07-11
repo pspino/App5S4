@@ -23,8 +23,8 @@ function r = CoupeBandes(s1,Fe)
     z = [exp((freq(1)*2*pi)/Fe*i) exp((freq(2)*2*pi)/Fe*i) exp((freq(3)*2*pi)/Fe*i) exp((freq(4)*2*pi)/Fe*i) ];
     z = [z, conj(z)];
 %     p = 0.980*z;
-    p = 0.90*z;
-    a = poly([p]);
-    b = poly([z]);
+    p = 0.9*z;
+    a = poly(p);
+    b = poly(z);
     r = filter(b,a,s1);
 end
